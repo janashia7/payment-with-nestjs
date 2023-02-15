@@ -6,7 +6,6 @@ import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { config } from 'dotenv';
 import { PassportModule } from '@nestjs/passport';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 config();
 
 @Module({
