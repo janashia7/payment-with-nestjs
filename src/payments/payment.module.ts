@@ -7,7 +7,6 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log(process.env.STRIPE_API_KEY);
 
 @Module({
   imports: [
