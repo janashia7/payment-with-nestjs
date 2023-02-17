@@ -8,14 +8,16 @@ export class UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(userDto: any): Promise<User> {
-    const a = await this.userModel.create(userDto);
-
-    return this.userModel
-      .findOne({ nickname: userDto.nickname })
-      .select(['nickname', 'fullName', '-_id']);
+    console.log("🚀 ~ file: user.repository.ts:11 ~ UserRepository ~ create ~ userDto", userDto)
+    return await this.userModel.create(userDto);
   }
 
   async findOne(username: string) {
+    console.log(
+      '🚀 ~ file: user.repository.ts:19 ~ UserRepository ~ findOne ~ username',
+      username,
+    );
+
     return await this.userModel.findOne({ username });
   }
 }

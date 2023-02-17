@@ -16,6 +16,6 @@ dotenv.config();
     }),
   ],
   controllers: [PaymentController],
-  providers: [PaymentService, ConfigService],
+  providers: [PaymentService],
 })
 export class PaymentsModule {}
