@@ -1,9 +1,12 @@
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import {
   Controller,
   Post,
   Body,
   HttpException,
   HttpStatus,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 
@@ -11,19 +14,21 @@ import { PaymentService } from './payment.service';
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('charge')
-  async createCharge(
+  async createCharge(@Request() req,
     @Body('amount') amount: number,
     @Body('source') source: string,
   ) {
     try {
-      const a = await this.paymentService.createCharge(amount, source);
-      return a;
+      console.log(req.user);
+      
+      return this.paymentService.createCharge(amount, source);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.message, error.status);
     }
   }
-
+  @UseGuards(JwtAuthGuard)
   @Post('token')
   async createToken(
     @Body('card_number') number: string,
@@ -32,6 +37,8 @@ export class PaymentController {
     @Body('cvc') cvc: string,
   ) {
     try {
+
+
       const token = await this.paymentService.createToken(
         number,
         exp_month,

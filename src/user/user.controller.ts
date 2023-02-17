@@ -7,6 +7,7 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
 import { UserService } from './user.service';
@@ -31,8 +32,12 @@ export class UserController {
   @Post('signin')
   async signin(@Request() req) {
     try {
+      console.log(req.user);
+
       return this.authService.login(req.user);
     } catch (err) {
+      console.log(err);
+
       throw new HttpException(err.message, HttpStatus.FORBIDDEN);
     }
   }
