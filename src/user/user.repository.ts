@@ -18,4 +18,12 @@ export class UserRepository {
   async findOne(username: string) {
     return await this.userModel.findOne({ username });
   }
+
+  async addUserPayment(username: string, payment: {}) {
+    return await this.userModel.findOneAndUpdate(
+      { username },
+      { $push: { payments: payment } },
+      { new: true },
+    );
+  }
 }

@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { config } from 'dotenv';
 config();
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {

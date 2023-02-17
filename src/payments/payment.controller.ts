@@ -16,14 +16,15 @@ export class PaymentController {
 
   @UseGuards(JwtAuthGuard)
   @Post('charge')
-  async createCharge(@Request() req,
+  async createCharge(
+    @Request() req,
     @Body('amount') amount: number,
     @Body('source') source: string,
   ) {
     try {
-      console.log(req.user);
-      
-      return this.paymentService.createCharge(amount, source);
+      const token = req.user.access_token;
+
+      return this.paymentService.createCharge(amount, source, token);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -37,8 +38,6 @@ export class PaymentController {
     @Body('cvc') cvc: string,
   ) {
     try {
-
-
       const token = await this.paymentService.createToken(
         number,
         exp_month,

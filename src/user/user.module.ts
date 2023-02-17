@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './user.model';
 import { UserRepository } from './user.repository';
 import { AuthModule } from '../auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [

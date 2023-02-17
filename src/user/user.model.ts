@@ -10,6 +10,9 @@ export class User {
 
   @Prop({ type: String, required: true })
   password: string;
+
+  @Prop({ type: Array, default: [] })
+  payments: [];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
