@@ -41,6 +41,8 @@ export class PaymentService {
         description: 'Example charge',
       });
 
+      const date = new Date();
+
       const paymentInfo = {
         cus,
         amount,
@@ -51,22 +53,14 @@ export class PaymentService {
         country,
         last4,
         receipt_url,
+        date,
       };
 
-      if (paid) {
-        const { username } = this.jwtService.verify(token, {
-          secret: process.env.JWT_SECRET,
-        });
+      const { username } = this.jwtService.verify(token, {
+        secret: process.env.JWT_SECRET,
+      });
 
-        const payment = await this.userService.addUserPayment(
-          username,
-          paymentInfo,
-        );
-
-        console.log(payment);
-      }
-
-      // TODO: add jwt guard to payment controller and store info in database with id which is given to jwt playground
+      return await this.userService.addUserPayment(username, paymentInfo);
     } catch (err) {
       throw new PaymentException(err.message);
     }

@@ -20,10 +20,12 @@ export class UserRepository {
   }
 
   async addUserPayment(username: string, payment: {}) {
-    return await this.userModel.findOneAndUpdate(
-      { username },
-      { $push: { payments: payment } },
-      { new: true },
-    );
+    return await this.userModel
+      .findOneAndUpdate(
+        { username },
+        { $push: { payments: payment } },
+        { new: true },
+      )
+      .select('username payments');
   }
 }
