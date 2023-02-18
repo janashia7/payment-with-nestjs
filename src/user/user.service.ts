@@ -41,7 +41,7 @@ export class UserService {
     return user;
   }
 
-  async addUserPayment(username: string, payment: {}) {
+  async addUserPayment(username: string, payment: object) {
     return this.userRepository.addUserPayment(username, payment);
   }
 }

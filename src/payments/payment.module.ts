@@ -1,13 +1,10 @@
 import { UserModule } from './../user/user.module';
-import { Module, forwardRef } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Module } from '@nestjs/common';
 import { StripeModule } from 'nestjs-stripe';
 import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
 import * as dotenv from 'dotenv';
-import { AuthModule } from 'src/auth/auth.module';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 dotenv.config();
 

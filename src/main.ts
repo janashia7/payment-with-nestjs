@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-import * as https from 'https';
 import * as path from 'path';
 
 dotenv.config();
@@ -13,8 +12,8 @@ async function bootstrap() {
     cert: fs.readFileSync(path.resolve(__dirname, '../ssl/certificate.crt')),
   };
 
-  const app = await NestFactory.create(AppModule, {httpsOptions});
-  app.enableCors({ origin: '*' });
+  const app = await NestFactory.create(AppModule, { httpsOptions });
+
   await app.listen(3000);
 }
 bootstrap();

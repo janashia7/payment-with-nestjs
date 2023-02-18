@@ -18,7 +18,7 @@ export class UserRepository {
     return this.userModel.findOne({ username });
   }
 
-  async addUserPayment(username: string, payment: {}) {
+  async addUserPayment(username: string, payment: object) {
     return this.userModel
       .findOneAndUpdate(
         { username },
