@@ -48,20 +48,6 @@
       "pre-push": "npm run test"
     }
   },
-  "lint-staged": {
-    "**/*.{ts,js}": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
-    ],
-    "**/*": [
-      "prettier --write",
-      "git add"
-    ],
-    "!package.json": [
-      "git add"
-    ]
-  },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
