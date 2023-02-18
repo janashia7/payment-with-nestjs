@@ -7,20 +7,19 @@ import { User, UserDocument } from './user.model';
 export class UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async create(userDto: any): Promise<User> {
-    const a = await this.userModel.create(userDto);
-
-    return this.userModel
-      .findOne({ nickname: userDto.nickname })
-      .select(['nickname', 'fullName', '-_id']);
+  async create(userDto: any, hashedPassword: string): Promise<User> {
+    return this.userModel.create({
+      ...userDto,
+      password: hashedPassword,
+    });
   }
 
   async findOne(username: string) {
-    return await this.userModel.findOne({ username });
+    return this.userModel.findOne({ username });
   }
 
   async addUserPayment(username: string, payment: {}) {
-    return await this.userModel
+    return this.userModel
       .findOneAndUpdate(
         { username },
         { $push: { payments: payment } },
