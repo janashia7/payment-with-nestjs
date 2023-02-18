@@ -3,6 +3,10 @@
 /node_modules
 .env
 
+# SSL/TLS certificates
+ssl/*.key
+ssl/*.crt
+
 # Logs
 logs
 *.log

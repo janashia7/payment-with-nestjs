@@ -23,7 +23,7 @@ export class UserService {
         message: 'User registered successfully',
       };
     } catch (error) {
-      if (error.code === 409) {
+      if (error.code === 11000) {
         throw new UserAlreadyExistsException(userDto.username);
       } else {
         throw new DatabaseException('Failed to create user', error);
