@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcrypt';
-import { UserNotFoundException } from '../errors/user.exception';
+import {
+  DatabaseException,
+  UserAlreadyExistsException,
+  UserNotFoundException,
+} from '../errors/user.exception';
 
 @Injectable()
 export class UserService {
@@ -11,12 +15,20 @@ export class UserService {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(userDto.password, saltRounds);
 
-    await this.userRepository.create(userDto, hashedPassword);
+    try {
+      await this.userRepository.create(userDto, hashedPassword);
 
-    return {
-      success: true,
-      message: 'User registered successfully',
-    };
+      return {
+        success: true,
+        message: 'User registered successfully',
+      };
+    } catch (error) {
+      if (error.code === 409) {
+        throw new UserAlreadyExistsException(userDto.username);
+      } else {
+        throw new DatabaseException('Failed to create user', error);
+      }
+    }
   }
 
   async findOne(username: string) {

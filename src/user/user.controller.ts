@@ -23,7 +23,7 @@ export class UserController {
     try {
       return await this.userService.create(userDto);
     } catch (err) {
-      throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException(err.message, err.status);
     }
   }
 
@@ -33,7 +33,7 @@ export class UserController {
     try {
       return this.authService.login(req.user);
     } catch (err) {
-      throw new HttpException(err.message, HttpStatus.FORBIDDEN);
+      throw new HttpException(err.message, err.status);
     }
   }
 }
