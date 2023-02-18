@@ -57,6 +57,9 @@
     "**/*": [
       "prettier --write",
       "git add"
+    ],
+    "!package.json": [
+      "git add"
     ]
   },
   "devDependencies": {
