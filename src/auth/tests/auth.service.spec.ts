@@ -7,7 +7,6 @@ import { UserService } from '../../user/user.service';
 import { AuthService } from '../auth.service';
 import * as bcrypt from 'bcrypt';
 import { AuthUserDto } from '../dto/auth.dto';
-import { UserModule } from '../../user/user.module';
 import { UserRepository } from '../../user/user.repository';
 import { UserNotFoundException } from '../../errors/user.exception';
 
@@ -63,7 +62,6 @@ describe('AuthService', () => {
     });
 
     it('should return null if password is invalid', async () => {
-      // Arrange
       const user = {
         username: 'testuser',
         password: await bcrypt.hash('testpassword', 10),
@@ -71,18 +69,15 @@ describe('AuthService', () => {
       jest.spyOn(userModel, 'findOne').mockResolvedValueOnce(user);
       jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(false as never);
 
-      // Act
       const result = await authService.validateUser(
         'testuser',
         'invalidpassword',
       );
 
-      // Assert
       expect(result).toBeNull();
     });
 
     it('should return a user object if username and password are valid', async () => {
-      // Arrange
       const user = {
         username: 'testuser',
         password: await bcrypt.hash('testpassword', 10),
@@ -91,13 +86,11 @@ describe('AuthService', () => {
       jest.spyOn(userModel, 'findOne').mockResolvedValueOnce(user);
       jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(true as never);
 
-      // Act
       const result = await authService.validateUser(
         user.username,
         user.password,
       );
 
-      // Assert
       expect(result).toEqual({
         id: user.id,
         username: user.username,

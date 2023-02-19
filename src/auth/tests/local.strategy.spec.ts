@@ -1,9 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import mongoose from 'mongoose';
 import { AuthService } from '../auth.service';
 import { AuthUserDto } from '../dto/auth.dto';
 import { LocalStrategy } from '../strategies/local.strategy';
-import * as bcrypt from 'bcrypt';
 import { UnauthorizedException } from '@nestjs/common';
 
 describe('LocalStrategy', () => {
@@ -29,7 +27,6 @@ describe('LocalStrategy', () => {
 
   describe('validate', () => {
     it('should return an AuthUserDto object if user is valid', async () => {
-      // Arrange
       const username = 'testuser';
       const password = 'testpassword';
       const user: AuthUserDto = {
@@ -38,10 +35,8 @@ describe('LocalStrategy', () => {
       };
       jest.spyOn(authService, 'validateUser').mockResolvedValueOnce(user);
 
-      // Act
       const result = await localStrategy.validate(username, password);
 
-      // Assert
       expect(result).toBe(user);
       expect(authService.validateUser).toHaveBeenCalledWith(username, password);
     });
