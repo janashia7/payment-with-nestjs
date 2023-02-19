@@ -6,17 +6,22 @@ import {
   UserAlreadyExistsException,
   UserNotFoundException,
 } from '../errors/user.exception';
+import { UserResponse } from './interfaces/user-message.interface';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(userDto: any) {
+  async create(createUserDto: CreateUserDto): Promise<UserResponse> {
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(userDto.password, saltRounds);
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      saltRounds,
+    );
 
     try {
-      await this.userRepository.create(userDto, hashedPassword);
+      await this.userRepository.create(createUserDto, hashedPassword);
 
       return {
         success: true,
@@ -24,7 +29,7 @@ export class UserService {
       };
     } catch (error) {
       if (error.code === 11000) {
-        throw new UserAlreadyExistsException(userDto.username);
+        throw new UserAlreadyExistsException(createUserDto.username);
       } else {
         throw new DatabaseException('Failed to create user', error);
       }

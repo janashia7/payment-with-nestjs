@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
+import { ValidationPipe } from '@nestjs/common';
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ async function bootstrap() {
   };
 
   const app = await NestFactory.create(AppModule, { httpsOptions });
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);
 }

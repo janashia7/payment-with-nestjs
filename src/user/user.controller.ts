@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -18,9 +19,9 @@ export class UserController {
   ) {}
 
   @Post('signup')
-  async signup(@Body() userDto: any) {
+  async signup(@Body() createUserDto: CreateUserDto) {
     try {
-      return await this.userService.create(userDto);
+      return await this.userService.create(createUserDto);
     } catch (err) {
       throw new HttpException(err.message, err.status);
     }

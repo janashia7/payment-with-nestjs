@@ -1,3 +1,4 @@
+import { CreateChargeDto } from './dto/create-charge.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectStripe } from 'nestjs-stripe';
 import { PaymentException } from '../errors/payment.exception';
@@ -5,6 +6,7 @@ import { Stripe } from 'stripe';
 import { JwtService } from '@nestjs/jwt';
 import { config } from 'dotenv';
 import { UserService } from '../user/user.service';
+import { CreateTokenDto } from './dto/create-token.dto';
 config();
 
 @Injectable()
@@ -15,12 +17,10 @@ export class PaymentService {
     private readonly userService: UserService,
   ) {}
 
-  async createCharge(
-    amount: number,
-    source: string,
-    token: string,
-  ): Promise<any> {
+  async createCharge(createChargeDto: CreateChargeDto, token: string) {
     try {
+      const { amount, source } = createChargeDto;
+
       const customer = await this.stripeClient.customers.create({
         source,
       });
@@ -67,20 +67,12 @@ export class PaymentService {
   }
 
   async createToken(
-    number: string,
-    exp_month: string,
-    exp_year: string,
-    cvc: string,
-  ): Promise<string> {
+    createTokenDto: CreateTokenDto,
+  ): Promise<{ token: string }> {
     const token = await this.stripeClient.tokens.create({
-      card: {
-        number,
-        exp_month,
-        exp_year,
-        cvc,
-      },
+      card: createTokenDto,
     });
 
-    return token.id;
+    return { token: token.id };
   }
 }

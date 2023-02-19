@@ -9,6 +9,8 @@ import {
   Request,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
+import { CreateTokenDto } from './dto/create-token.dto';
+import { CreateChargeDto } from './dto/create-charge.dto';
 
 @Controller('payment')
 export class PaymentController {
@@ -16,34 +18,20 @@ export class PaymentController {
 
   @UseGuards(JwtAuthGuard)
   @Post('charge')
-  async createCharge(
-    @Request() req,
-    @Body('amount') amount: number,
-    @Body('source') source: string,
-  ) {
+  async createCharge(@Request() req, @Body() createChargeDto: CreateChargeDto) {
     try {
       const token = req.user.access_token;
 
-      return this.paymentService.createCharge(amount, source, token);
+      return this.paymentService.createCharge(createChargeDto, token);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
   }
   @UseGuards(JwtAuthGuard)
   @Post('token')
-  async createToken(
-    @Body('card_number') number: string,
-    @Body('exp_month') exp_month: string,
-    @Body('exp_year') exp_year: string,
-    @Body('cvc') cvc: string,
-  ) {
+  async createToken(@Body() createTokenDto: CreateTokenDto) {
     try {
-      const token = await this.paymentService.createToken(
-        number,
-        exp_month,
-        exp_year,
-        cvc,
-      );
+      const token = await this.paymentService.createToken(createTokenDto);
 
       return token;
     } catch (error) {
