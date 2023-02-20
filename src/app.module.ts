@@ -7,9 +7,9 @@ config();
 
 @Module({
   imports: [
+    MongooseModule.forRoot(process.env.MONGO_URL),
     UserModule,
     PaymentsModule,
-    MongooseModule.forRoot(process.env.MONGO_URL),
   ],
 })
 export class AppModule {}

@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   HttpException,
-  HttpStatus,
   UseGuards,
   Request,
 } from '@nestjs/common';
@@ -35,7 +34,7 @@ export class PaymentController {
 
       return token;
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      throw new HttpException(error.message, error.status);
     }
   }
 }
