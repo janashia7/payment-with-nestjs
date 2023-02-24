@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { config } from 'dotenv';
 import { UserService } from '../user/user.service';
 import { CreateTokenDto } from './dto/create-token.dto';
+import { PaymentInfoDto } from './dto/payment-info.dto';
 config();
 
 @Injectable()
@@ -43,7 +44,7 @@ export class PaymentService {
 
       const date = new Date();
 
-      const paymentInfo = {
+      const paymentInfo: PaymentInfoDto = {
         cus,
         amount,
         currency,

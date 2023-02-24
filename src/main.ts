@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 dotenv.config();
 
@@ -20,6 +21,17 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { httpsOptions });
 
   app.useGlobalPipes(new ValidationPipe());
+
+  const config = new DocumentBuilder()
+    .setTitle('API Documentation')
+    .setDescription('API Documentation')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('api-doc', app, document);
 
   await app.listen(process.env.PORT || 3000);
 }
