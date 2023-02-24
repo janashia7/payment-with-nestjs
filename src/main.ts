@@ -8,10 +8,16 @@ import { ValidationPipe } from '@nestjs/common';
 dotenv.config();
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync(path.resolve(__dirname, '../ssl/private.key')),
-    cert: fs.readFileSync(path.resolve(__dirname, '../ssl/certificate.crt')),
-  };
+  let httpsOptions: { key: Buffer; cert: Buffer };
+
+  if (process.env.NODE_ENV !== 'production') {
+    httpsOptions = {
+      key: fs.readFileSync(path.resolve(__dirname, '../ssl/private.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, '../ssl/certificate.crt')),
+    };
+  }
+
+  console.log(httpsOptions);
 
   const app = await NestFactory.create(AppModule, { httpsOptions });
 
